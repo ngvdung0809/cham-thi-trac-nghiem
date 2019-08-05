@@ -15,7 +15,7 @@ def show(a) :
         l = len(a[i])
         cv2.line(exp, tuple(a[i][0][0]), tuple(a[i][l - 1][0]), (0, 60, 255), 2)  # chưa vẽ đc toàn bộ hình tròn.
 
-img=cv2.imread("anh\\anh1.jpg",1)
+img=cv2.imread("anh\\anh5.jpg",1)
 cv2.imshow("nguon",img)
 
 
@@ -103,29 +103,40 @@ Questioncnts=contours.sort_contours(Questioncnts,"top-to-bottom")[0]
 #     print(m,n,b,v)
 #print(Questioncnts)
 correct=0
+count=0
 for (q,i) in enumerate(np.arange(0,len(Questioncnts),5)):
     cntt=contours.sort_contours(Questioncnts[i:i+5])[0]
     #print(cntt)
-    bubble=[0,0]
+    bubble=[-1,-1]
     for(j,c) in enumerate(cntt) :
         mask=np.zeros(thresh.shape,dtype="uint8")
         cv2.drawContours(mask,[c],-1,255,-1)
         mask=cv2.bitwise_and(thresh,thresh,mask=mask)
         total=cv2.countNonZero(mask)
-        if total > bubble[0] :
+        # print(total)
+        # tim so dap an khoanh
+        if total >600 :
             bubble=[total,j]
-            #print(bubble)
+            count +=1
+
     color = (0, 0, 255)
     k = ANSWER_KEY[q]
 
-    # check to see if the bubbled answer is correct
-    if k == bubble[1]:
-        color = (0, 255, 0)
-        correct += 1
+    #print(bubble)
+    #print(count)
+    # kiem tra dap an dung
+    # kiem tra dap an xem co khoanh nhieu hon 1 dap an hay k
 
-    # draw the outline of the correct answer on the test
+    if count ==1:
+        if k == bubble[1]:
+            color = (0, 255, 0)
+            correct += 1
+    count =0
+
+    # ve hinh tron quannh dap an dung, dung thi xanh, sai thi do
     #print(color)
     cv2.drawContours(paper, [cntt[k]], -1, color, 3)
+# so dap an dung la
 print(correct)
 cv2.imshow("Exam", paper)
 
