@@ -137,7 +137,7 @@ for (q,i) in enumerate(np.arange(0,len(Questioncnts),5)):
     #print(color)
     cv2.drawContours(paper, [cntt[k]], -1, color, 3)
 # so dap an dung la
-print(correct)
+print("So cau dung la:",correct,"/5")
 cv2.imshow("Exam", paper)
 
 correct=correct/5*10
